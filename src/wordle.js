@@ -66,14 +66,13 @@ const App = () => {
    
     return (
         <div className="board">
-            <button onClick={refreshPage}>New Game</button>
+            <button className="new-game-button" onClick={refreshPage}>New Game</button>
             {
                 guesses.map((guess, i) => {
                     const isCurrentGuess = i === guesses.findIndex(val => val == null);
                     return <Line key={i} solution={solution} guess={isCurrentGuess ? currentGuess : guess ?? ""} />
                 })
             }
-            {solution}
         </div>
     )
 };

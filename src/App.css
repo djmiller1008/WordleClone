@@ -34,3 +34,8 @@
 .almost {
   background-color: yellow;
 }
+
+.new-game-button {
+  background-color: none;
+  margin-bottom: 25px;
+}
