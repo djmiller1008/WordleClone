@@ -1,0 +1,36 @@
+.tile {
+  height: 50px;
+  width: 50px;
+  border: 3px solid black;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 28px;
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+.line {
+  display: flex;
+}
+
+.board {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 100px;
+}
+
+.correct {
+  background-color: green;
+}
+
+.incorrect {
+  background-color: gray;
+}
+
+.almost {
+  background-color: yellow;
+}
