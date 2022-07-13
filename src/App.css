@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 100px;
+  margin-top: 30px;
 }
 
 .correct {
@@ -38,4 +38,11 @@
 .new-game-button {
   background-color: none;
   margin-bottom: 25px;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
