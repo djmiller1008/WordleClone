@@ -27,6 +27,8 @@ const App = () => {
         const handleInput = (event) => {
             if (ALPHABET.includes(event.key)) {
                 setCurrentGuess(currentGuess + event.key);
+            } else if (event.key === 'Backspace') {
+                setCurrentGuess(currentGuess.slice(0, currentGuess.length - 1))
             }
         }
 
@@ -65,29 +67,45 @@ const App = () => {
     }
    
     return (
-        <div className="board">
-            <button className="new-game-button" onClick={refreshPage}>New Game</button>
-            {
-                guesses.map((guess, i) => {
-                    const isCurrentGuess = i === guesses.findIndex(val => val == null);
-                    return <Line key={i} solution={solution} guess={isCurrentGuess ? currentGuess : guess ?? ""} />
-                })
-            }
+        <div className="game-container">
+            <h1>Wordle Clone</h1>
+            <div className="board">
+                <button className="new-game-button" onClick={refreshPage}>New Game</button>
+                {
+                    guesses.map((guess, i) => {
+                        const isCurrentGuess = i === guesses.findIndex(val => val == null);
+                        return <Line key={i} solution={solution} guess={isCurrentGuess ? currentGuess : guess ?? ""} />
+                    })
+                }
+            </div>
         </div>
     )
 };
 
 const Line = ({ solution, guess }) => {
     let tiles = [];
+    let currentGuessHash = {};
+
+    for (let i = 0; i < WORD_LENGTH; i++) {
+        currentGuessHash[guess[i]] = 0;
+    }
+
+    
 
     if (guess.length === WORD_LENGTH) {
         for (let i = 0; i < WORD_LENGTH; i++) {
             const char = guess[i];
             if (guess[i] === solution[i]) {
+                currentGuessHash[guess[i]]++;
                 tiles.push(<div key={i} className="tile correct">{char}</div>)
             } else if (solution.includes(char)) {
+                if (currentGuessHash[guess[i]] >= solution.match(guess[i])) {
+                    tiles.push(<div key={i} className="tile incorrect">{char}</div>)
+                }
+                currentGuessHash[guess[i]]++;
                 tiles.push(<div key={i} className="tile almost">{char}</div>)
             } else {
+                currentGuessHash[guess[i]]++;
                 tiles.push(<div key={i} className="tile incorrect">{char}</div>)
             }
         }
