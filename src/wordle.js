@@ -2,12 +2,13 @@ import React from "react";
 import { useState, useEffect } from "react";
 import './App.css';
 
-const API_URL = 'https://random-word-api.herokuapp.com/word?length=5'
+const SOLUTION_API_URL = 'https://random-word-api.herokuapp.com/word?length=5'
 const WORD_LENGTH = 5;
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
 
 const App = () => {
     const [solution, setSolution] = useState(null);
+  
     const [guesses, setGuesses] = useState(Array(6).fill(null));
     const [currentGuess, setCurrentGuess] = useState("");
     const [guessesIndex, setGuessesIndex] = useState(0);
@@ -17,11 +18,15 @@ const App = () => {
     window.currentGuess = currentGuess;
     window.guesses = guesses;
 
+    
     useEffect(() => {
-        fetch(API_URL)
+        fetch(SOLUTION_API_URL)
             .then(res => res.json())
             .then(word => setSolution(word.toString()));
+           
     }, []); 
+
+   
 
     useEffect(() => {
         const handleInput = (event) => {
@@ -33,6 +38,7 @@ const App = () => {
         }
 
         if (currentGuess.length === 5) {
+
             let newGuesses = [...guesses];
             newGuesses[guessesIndex] = currentGuess;
             setGuesses(newGuesses);
@@ -53,7 +59,7 @@ const App = () => {
         }
 
         if (isGameOver) {
-            alert("Game Over :(");
+            alert(`Sorry, it was ${solution}!`);
         }
         if (!isGameOver && !isWinner) {
             window.addEventListener('keydown', handleInput);
@@ -65,6 +71,8 @@ const App = () => {
     const refreshPage = () => {
         window.location.reload(false);
     }
+
+
    
     return (
         <div className="game-container">
@@ -84,28 +92,40 @@ const App = () => {
 
 const Line = ({ solution, guess }) => {
     let tiles = [];
-    let currentGuessHash = {};
 
-    for (let i = 0; i < WORD_LENGTH; i++) {
-        currentGuessHash[guess[i]] = 0;
+    const compare = (target, guess) => {
+        let targetArray = target.split("");
+        let guessArray = guess.split("");
+      
+        let output = Array(5).fill("-");
+        for (let i = 0; i < 5; i++) {
+           
+            if (targetArray[i] === guessArray[i]) {
+                output[i] = "X";
+                targetArray[i] = "-";
+            }
+        }
+    
+        for (let i = 0; i < 5; i++) {
+            if (targetArray.includes(guess[i]) && output[i] == "-") {
+                output[i] = "O";
+                targetArray[targetArray.indexOf(guessArray[i])] = "-";
+            }
+        }
+    
+        return output;
     }
-
     
 
     if (guess.length === WORD_LENGTH) {
+        let outputResult = compare(solution, guess);
         for (let i = 0; i < WORD_LENGTH; i++) {
             const char = guess[i];
-            if (guess[i] === solution[i]) {
-                currentGuessHash[guess[i]]++;
+            if (outputResult[i] === "X") {
                 tiles.push(<div key={i} className="tile correct">{char}</div>)
-            } else if (solution.includes(char)) {
-                if (currentGuessHash[guess[i]] >= solution.match(guess[i])) {
-                    tiles.push(<div key={i} className="tile incorrect">{char}</div>)
-                }
-                currentGuessHash[guess[i]]++;
+            } else if (outputResult[i] === "O") {
                 tiles.push(<div key={i} className="tile almost">{char}</div>)
             } else {
-                currentGuessHash[guess[i]]++;
                 tiles.push(<div key={i} className="tile incorrect">{char}</div>)
             }
         }
