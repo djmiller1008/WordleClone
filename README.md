@@ -6,6 +6,8 @@ This is a clone of the popular game Wordle. I build this to practice my React sk
 
 - Fork and clone the repository on your local machine
 
+- Switch to the WordleClone directory with `cd WordleClone`
+
 - Run `npm install`
 
 - Running `npm start` will start the server and open the browser for you to play!
