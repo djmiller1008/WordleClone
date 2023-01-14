@@ -107,7 +107,7 @@ const Line = ({ solution, guess }) => {
         }
     
         for (let i = 0; i < 5; i++) {
-            if (targetArray.includes(guess[i]) && output[i] == "-") {
+            if (targetArray.includes(guess[i]) && output[i] === "-") {
                 output[i] = "O";
                 targetArray[targetArray.indexOf(guessArray[i])] = "-";
             }
@@ -116,7 +116,6 @@ const Line = ({ solution, guess }) => {
         return output;
     }
     
-
     if (guess.length === WORD_LENGTH) {
         let outputResult = compare(solution, guess);
         for (let i = 0; i < WORD_LENGTH; i++) {
@@ -143,11 +142,6 @@ const Line = ({ solution, guess }) => {
         </div>
     )
 }
-
-
-
-
-
 
 export default App;
 
